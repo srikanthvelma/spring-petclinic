@@ -7,7 +7,7 @@ node('UBUNTU_NODE2') {
         sh 'mvn package'
     }
     stage('postbuild') {
-        archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
+        archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar'
                          junit '**/surefire-reports/TEST-*.xml'
     }
 }
