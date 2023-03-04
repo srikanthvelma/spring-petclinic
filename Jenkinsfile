@@ -14,9 +14,13 @@ pipeline {
         }
         stage('postbuild') {
             steps {
-                archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar'
-                                 junit '**/surefire-reports/TEST-*.xml'
+                archiveArtifacts artifacts: '**/spring-petclinic-3.0.0.jar'
+                                 junit '**/TEST-*.xml'
+                                 mail subject: 'Build Failure',
+                                      body: 'please find the details',
+                                      to: 'velmasrikanth@gmail.com'
             }
         }
+        
     }
 }
