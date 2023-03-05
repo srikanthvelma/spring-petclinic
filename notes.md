@@ -16,3 +16,10 @@ Pipeline for Jenkins for Spring Pet Clinic Project in 3 methods
     * freestyle
     * scripted
     * declarative 
+### freestyle
+
+
+
+
+
+
