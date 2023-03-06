@@ -16,10 +16,11 @@ pipeline {
         stage('sonar analysis') {
             steps {
                 withSonarQubeEnv('SONAQUBE_CLOUD') {
-                    sh 'mvn clean package sonar:sonar -Dsonar.login=f44d05ed45fa06c3ce599fa98830d7a2a21561c8 \ 
-                    -Dsonar.host.url=https://sonarcloud.io \ 
-                    -Dsonar.organization=springpetcinic57 \ 
-                    -Dsonar.projectkey=petclinic'
+                    sh 'mvn clean package sonar:sonar \ 
+                        -Dsonar.login=f44d05ed45fa06c3ce599fa98830d7a2a21561c8 \ 
+                        -Dsonar.host.url=https://sonarcloud.io \ 
+                        -Dsonar.organization=springpetcinic57 \ 
+                        -Dsonar.projectkey=petclinic'
                 }
             }
         }
