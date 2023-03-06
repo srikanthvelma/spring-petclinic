@@ -16,8 +16,8 @@ pipeline {
         stage('sonar analysis') {
             steps {
                 withSonarQubeEnv('SONAQUBE_CLOUD') {
-                    sh 'mvn clean verify sonar:sonar\
-                        -Dsonar.login=0953f64b8781d5a206154146dc6415dda632c5da\ 
+                    sh 'mvn clean verify sonar:sonar \
+                        -Dsonar.login=0953f64b8781d5a206154146dc6415dda632c5da\
                         -Dsonar.organization=springpetclinic57\
                         -Dsonar.projectKey=springpetclinic57_petclinic1'
                 }
