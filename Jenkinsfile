@@ -5,7 +5,7 @@ pipeline {
         stage('vcs'){
             steps {
                 git url: 'https://github.com/srikanthvelma/spring-petclinic.git',
-                    branch: 'declarative'
+                    branch: 'jfrog'
             }
         }
         stage('Artifactory config') {
