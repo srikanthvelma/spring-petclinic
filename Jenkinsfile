@@ -8,31 +8,45 @@ pipeline {
                     branch: 'declarative'
             }
         }
+        stage('Artifactory config') {
+            steps {
+                rtServer (
+                    id: "ARTIFACTORY_SERVER",
+                    url: 'https://srikanthvelma.jfrog.io/artifactory',
+                    credentialsId: 'JFROG_KEY'
+                )
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: 'libs-release',
+                    snapshotRepo: 'libs-snapshot'
+                )
+                rtMavenResolver (
+                    id: "MAVEN_RESOLVER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: 'libs-release',
+                    snapshotRepo: 'libs-snapshot'
+                )
+            }
+        }
         stage('build') {
             steps {
-                sh 'mvn package'
+                rtMavenRun (
+                    tool: 'MAVEN_8',
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                )
             }
         }
         stage('sonar analysis') {
             steps {
-                withSonarQubeEnv('SONAQUBE_CLOUD') {
+                withSonarQubeEnv('SONARQUBE_CLOUD') {
                     sh 'mvn clean verify sonar:sonar \
                         -Dsonar.login=0953f64b8781d5a206154146dc6415dda632c5da\
                         -Dsonar.organization=springpetclinic57\
                         -Dsonar.projectKey=springpetclinic57_petclinic1'
                 }
-            }
-        }
-        stage('copy build') {
-            steps{
-                sh "mkdir -p /tmp/archive/${JOB_NAME}/${BUILD_ID} && cp ./target/spring-petclinic-*.jar /tmp/archive/${JOB_NAME}/${BUILD_ID}/"
-                sh "aws s3 sync /tmp/archive/${JOB_NAME}/${BUILD_ID} s3://srikanthcicd"
-            }
-        }
-        stage('postbuild') {
-            steps {
-                archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar'
-                                 junit '**/surefire-reports/TEST-*.xml'
             }
         }
     }
