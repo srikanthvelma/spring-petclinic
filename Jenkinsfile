@@ -37,6 +37,9 @@ pipeline {
                     goals: 'clean install',
                     deployerId: "MAVEN_DEPLOYER"
                 )
+                rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
             }
         }
         stage('sonar analysis') {
@@ -47,6 +50,13 @@ pipeline {
                         -Dsonar.organization=springpetclinic57\
                         -Dsonar.projectKey=springpetclinic57_petclinic1'
                 }
+            }
+        }
+        stage('post build') {
+            steps {
+                archiveArtifacts artifacts: '**/target/spring-petclinic-3.0.0-SNAPSHOT.jar',
+                                 onlyIfSuccessful: true
+                junit testResults: '**/surefire-reports/TEST-*.xml'
             }
         }
     }
