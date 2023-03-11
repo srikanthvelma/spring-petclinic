@@ -13,7 +13,7 @@ pipeline {
                 jdk 'JDK_17'
             }
             steps {
-                sh 'gradle build'
+                sh gradle build
             }
         }
         stage('postbuild') {
