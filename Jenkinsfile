@@ -10,7 +10,7 @@ pipeline {
         }
         stage('build') {
             tools {
-                jdk JDK_17
+                jdk 'JDK_17'
             }
             steps {
                 sh 'gradle build'
