@@ -1,5 +1,6 @@
 pipeline {
     agent { label 'UBUNTU_NODE2'}
+    triggers { pollSCM(* * * * *) }
     stages {
         stage('vcs'){
             steps {
@@ -12,7 +13,7 @@ pipeline {
                 jdk 'JDK_17'
             }
             steps {
-                sh 'gradle build'
+                sh gradle build
             }
         }
         stage('postbuild') {
